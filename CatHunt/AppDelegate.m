@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CHSearchTweetsDataSource.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    CHSearchTweetsDataSource *dataSource = [[CHSearchTweetsDataSource alloc] initWithQuery:@"#cat filter:images"];
+    
+    [dataSource reloadWithSuccess:^{
+        
+    } failure:^(NSError *error) {
+        NSLog(@"error:%@", error);
+    }];
+    
     return YES;
 }
 

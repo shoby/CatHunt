@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  CHPhotoCollectionViewController.h
 //  CatHunt
 //
 //  Created by shoby on 2015/01/07.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface CHPhotoCollectionViewController : UICollectionViewController
 
 @end
-
