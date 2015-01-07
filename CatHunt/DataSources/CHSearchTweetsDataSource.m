@@ -79,9 +79,25 @@ static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 20;
         [self.tweets addObjectsFromArray:tweets];
         
         if (successBlock) {
-            successBlock();
+            if ([NSThread isMainThread]) {
+                successBlock();
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    successBlock();
+                });
+            }
         }
-    } failure:failureBlock];
+    } failure:^(NSError *error) {
+        if (failureBlock) {
+            if ([NSThread isMainThread]) {
+                failureBlock(error);
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failureBlock(error);
+                });
+            }
+        }
+    }];
 }
 
 - (void)reset

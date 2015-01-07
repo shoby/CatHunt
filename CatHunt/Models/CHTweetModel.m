@@ -8,12 +8,33 @@
 
 #import "CHTweetModel.h"
 #import "CHEntitiesModel.h"
+#import "CHMediaModel.h"
+#import "CHSizesModel.h"
+#import "CHSizeModel.h"
 
 @interface CHTweetModel ()<MTLJSONSerializing>
 
 @end
 
 @implementation CHTweetModel
+
+- (NSURL *)imageURL
+{
+    CHMediaModel *media = self.entities.mediaArray.firstObject;
+    return media.mediaURL;
+}
+
+- (NSInteger)imageWidth
+{
+    CHMediaModel *media = self.entities.mediaArray.firstObject;
+    return media.sizes.large.width;
+}
+
+- (NSInteger)imageHeight
+{
+    CHMediaModel *media = self.entities.mediaArray.firstObject;
+    return media.sizes.large.height;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {

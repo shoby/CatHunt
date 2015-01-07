@@ -7,25 +7,64 @@
 //
 
 #import "CHPhotoCollectionViewController.h"
+#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
+#import "CHSearchTweetsDataSource.h"
+#import "CHTweetModel.h"
+#import "CHEntitiesModel.h"
+#import "CHMediaModel.h"
+#import "CHSizesModel.h"
+#import "CHSizesModel.h"
+#import "CHPhotoCollectionViewCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
-@interface CHPhotoCollectionViewController ()
+static const NSInteger CHPhotoCollectionViewControllerColumnCount = 2.0;
+static const NSInteger CHPhotoCollectionViewControllerItemSpace = 4.0;
 
+@interface CHPhotoCollectionViewController ()<CHTCollectionViewDelegateWaterfallLayout>
+@property (strong, nonatomic) CHSearchTweetsDataSource *dataSource;
+
+@property (nonatomic, readonly) CGFloat itemWidth;
 @end
 
 @implementation CHPhotoCollectionViewController
 
-static NSString * const reuseIdentifier = @"Cell";
+static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
+
+- (CGFloat)itemWidth
+{
+    NSInteger numberOfSpaces = CHPhotoCollectionViewControllerColumnCount + 1;
+    NSInteger totalSpacesWidth = numberOfSpaces * CHPhotoCollectionViewControllerItemSpace;
+    
+    return (self.collectionView.bounds.size.width - totalSpacesWidth) / CHPhotoCollectionViewControllerColumnCount;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.dataSource = [[CHSearchTweetsDataSource alloc] initWithQuery:@"#cat filter:images"];
     
-    // Register cell classes
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+    layout.columnCount = CHPhotoCollectionViewControllerColumnCount;
+    layout.minimumColumnSpacing = CHPhotoCollectionViewControllerItemSpace;
+    layout.minimumInteritemSpacing = CHPhotoCollectionViewControllerItemSpace;
+    layout.sectionInset = UIEdgeInsetsMake(CHPhotoCollectionViewControllerItemSpace,CHPhotoCollectionViewControllerItemSpace, CHPhotoCollectionViewControllerItemSpace, CHPhotoCollectionViewControllerItemSpace);
     
-    // Do any additional setup after loading the view.
+    self.collectionView.collectionViewLayout = layout;
+    
+    [self reload];
+}
+
+- (void)reload
+{
+    [self.dataSource reloadWithSuccess:^{
+        [self.collectionView reloadData];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    } failure:^(NSError *error) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedRecoverySuggestion preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,20 +85,26 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete method implementation -- Return the number of sections
-    return 0;
+    return 1;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-#warning Incomplete method implementation -- Return the number of items in the section
-    return 0;
+    return self.dataSource.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    CHPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    // Configure the cell
+    CHTweetModel *tweet = [self.dataSource tweetAtIndex:indexPath.row];
+    
+    if (tweet) {
+        [cell.imageView sd_setImageWithURL:tweet.imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            if (error) {
+                NSLog(@"image loading error:%@", error);
+            }
+        }];
+    }
     
     return cell;
 }
@@ -94,5 +139,25 @@ static NSString * const reuseIdentifier = @"Cell";
 	
 }
 */
+
+#pragma mark - CHTCollectionViewDelegateWaterfallLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CHTweetModel *tweet = [self.dataSource tweetAtIndex:indexPath.row];
+    return [self itemSizeForTweet:tweet];
+}
+
+- (CGSize)itemSizeForTweet:(CHTweetModel *)tweet
+{
+    if (!tweet) {
+        return CGSizeZero;
+    }
+    
+    CGFloat itemWidth = self.itemWidth;
+    CGFloat itemHeight = itemWidth / tweet.imageWidth * tweet.imageHeight;
+    
+    return CGSizeMake(itemWidth, itemHeight);
+}
 
 @end

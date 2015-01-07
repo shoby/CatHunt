@@ -14,4 +14,9 @@
 @property (assign, nonatomic, readonly) NSInteger ID;
 @property (copy, nonatomic, readonly) NSString *text;
 @property (strong, nonatomic, readonly) CHEntitiesModel *entities;
+
+// エイリアス
+@property (nonatomic, readonly) NSURL *imageURL;
+@property (nonatomic, readonly) NSInteger imageWidth;
+@property (nonatomic, readonly) NSInteger imageHeight;
 @end

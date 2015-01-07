@@ -18,6 +18,7 @@
 		CB43F9E01A5D7DC000ECDDF9 /* CHMediaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43F9DF1A5D7DC000ECDDF9 /* CHMediaModel.m */; };
 		CB43F9E31A5D7F2700ECDDF9 /* CHSizesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43F9E21A5D7F2700ECDDF9 /* CHSizesModel.m */; };
 		CB43F9E61A5D808100ECDDF9 /* CHSizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43F9E51A5D808100ECDDF9 /* CHSizeModel.m */; };
+		CB749F5D1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB749F5C1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.m */; };
 		CBD782B81A5C379800595915 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD782B71A5C379800595915 /* main.m */; };
 		CBD782BB1A5C379800595915 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD782BA1A5C379800595915 /* AppDelegate.m */; };
 		CBD782C11A5C379800595915 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBD782BF1A5C379800595915 /* Main.storyboard */; };
@@ -61,6 +62,8 @@
 		CB43F9E21A5D7F2700ECDDF9 /* CHSizesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSizesModel.m; path = Models/CHSizesModel.m; sourceTree = "<group>"; };
 		CB43F9E41A5D808100ECDDF9 /* CHSizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSizeModel.h; path = Models/CHSizeModel.h; sourceTree = "<group>"; };
 		CB43F9E51A5D808100ECDDF9 /* CHSizeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSizeModel.m; path = Models/CHSizeModel.m; sourceTree = "<group>"; };
+		CB749F5B1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHPhotoCollectionViewCell.h; path = Views/CHPhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		CB749F5C1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHPhotoCollectionViewCell.m; path = Views/CHPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		CBD782B21A5C379800595915 /* CatHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CatHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD782B61A5C379800595915 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBD782B71A5C379800595915 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -142,6 +145,15 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		CB749F5A1A5DA8B9007FFF61 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CB749F5B1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.h */,
+				CB749F5C1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		CBD782A91A5C379800595915 = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +179,7 @@
 			children = (
 				CBD782B91A5C379800595915 /* AppDelegate.h */,
 				CBD782BA1A5C379800595915 /* AppDelegate.m */,
+				CB749F5A1A5DA8B9007FFF61 /* Views */,
 				CB43F9D31A5D593100ECDDF9 /* ViewControllers */,
 				CB0682F01A5D894A00AFFC21 /* DataSources */,
 				CB43F9D41A5D594000ECDDF9 /* Models */,
@@ -382,6 +395,7 @@
 			files = (
 				CB43F9C41A5C483500ECDDF9 /* CHTwitterAccountStore.m in Sources */,
 				CB43F9E31A5D7F2700ECDDF9 /* CHSizesModel.m in Sources */,
+				CB749F5D1A5DA8E1007FFF61 /* CHPhotoCollectionViewCell.m in Sources */,
 				CB43F9E61A5D808100ECDDF9 /* CHSizeModel.m in Sources */,
 				CB43F9DA1A5D5FE800ECDDF9 /* CHTweetModel.m in Sources */,
 				CBD782BB1A5C379800595915 /* AppDelegate.m in Sources */,
