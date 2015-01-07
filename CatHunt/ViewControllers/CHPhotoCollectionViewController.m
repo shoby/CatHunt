@@ -22,6 +22,7 @@ static const NSInteger CHPhotoCollectionViewControllerItemSpace = 4.0;
 
 @interface CHPhotoCollectionViewController ()<CHTCollectionViewDelegateWaterfallLayout>
 @property (strong, nonatomic) CHSearchTweetsDataSource *dataSource;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (nonatomic, readonly) CGFloat itemWidth;
 @end
@@ -41,6 +42,8 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Cat Hunt";
+    
     self.dataSource = [[CHSearchTweetsDataSource alloc] initWithQuery:@"#cat filter:images"];
     
     CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
@@ -51,6 +54,10 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
     
     self.collectionView.collectionViewLayout = layout;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    
     [self reload];
 }
 
@@ -59,12 +66,21 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
     [self.dataSource reloadWithSuccess:^{
         [self.collectionView reloadData];
         [self.collectionView.collectionViewLayout invalidateLayout];
+        
+        [self.refreshControl endRefreshing];
     } failure:^(NSError *error) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription message:error.localizedRecoverySuggestion preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
         
         [self presentViewController:alertController animated:YES completion:nil];
+        
+        [self.refreshControl endRefreshing];
     }];
+}
+
+- (void)refresControlValueChanged:(id)sender
+{
+    [self reload];
 }
 
 - (void)didReceiveMemoryWarning {

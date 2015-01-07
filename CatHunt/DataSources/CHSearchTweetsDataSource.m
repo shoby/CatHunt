@@ -11,7 +11,7 @@
 #import "NSMutableDictionary+CHTwitterAPIParameters.h"
 #import "CHTweetModel.h"
 
-static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 20;
+static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 50;
 
 @interface CHSearchTweetsDataSource ()
 @property (copy, nonatomic) NSString *query;

@@ -122,12 +122,16 @@ static NSString *const TwitterAPIBaseURLString = @"https://api.twitter.com/1.1/"
     
     NSError *mappingError = nil;
     for (NSDictionary *jsonDictionary in statusesJSON) {
-        id tweet = [MTLJSONAdapter modelOfClass:CHTweetModel.class fromJSONDictionary:jsonDictionary error:&mappingError];
+        CHTweetModel *tweet = [MTLJSONAdapter modelOfClass:CHTweetModel.class fromJSONDictionary:jsonDictionary error:&mappingError];
         
         if (mappingError) {
             NSLog(@"mapping error:%@", mappingError);
         }
         
+        // 画像が含まれていない物は詰めない（アップロード待ち中だとnilになる）
+        if (!tweet.imageURL) {
+            continue;
+        }
         [tweets addObject:tweet];
     }
     
