@@ -12,6 +12,7 @@
 
 @interface CHSearchTweetsDataSource : NSObject
 @property (nonatomic, readonly) NSUInteger count;
+@property (nonatomic, readonly) BOOL isLoading;
 
 - (instancetype)initWithQuery:(NSString *)query;
 

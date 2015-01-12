@@ -14,6 +14,8 @@
 static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 50;
 
 @interface CHSearchTweetsDataSource ()
+@property (assign, nonatomic, readwrite) BOOL isLoading;
+
 @property (copy, nonatomic) NSString *query;
 @property (strong, nonatomic) NSMutableArray *tweets;
 
@@ -76,6 +78,7 @@ static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 50;
                 failure:(void (^)(NSError *))failureBlock
 {
     [self.apiClient searchTweetsWithQuery:self.query options:options success:^(NSArray *tweets) {
+        self.isLoading = NO;
         [self.tweets addObjectsFromArray:tweets];
         
         if (successBlock) {
@@ -88,6 +91,7 @@ static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 50;
             }
         }
     } failure:^(NSError *error) {
+        self.isLoading = NO;
         if (failureBlock) {
             if ([NSThread isMainThread]) {
                 failureBlock(error);
@@ -102,7 +106,8 @@ static const NSUInteger CHSearchTweetsDataSourceDefaultFetchCount = 50;
 
 - (void)reset
 {
-    self.tweets = [NSMutableArray array];
+    self.isLoading = NO;
+    self.tweets    = [NSMutableArray array];
 }
 
 @end

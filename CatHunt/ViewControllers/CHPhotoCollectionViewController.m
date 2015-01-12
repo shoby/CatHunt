@@ -63,6 +63,10 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
 
 - (void)reload
 {
+    if (self.dataSource.isLoading) {
+        return;
+    }
+    
     [self.dataSource reloadWithSuccess:^{
         [self.collectionView reloadData];
         [self.collectionView.collectionViewLayout invalidateLayout];
@@ -75,6 +79,35 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
         [self presentViewController:alertController animated:YES completion:nil];
         
         [self.refreshControl endRefreshing];
+    }];
+}
+
+- (void)loadMore
+{
+    if (self.dataSource.isLoading) {
+        return;
+    }
+    
+    NSInteger numberOfItemsBeforeUpdates = [self.collectionView numberOfItemsInSection:0];
+    
+    [self.dataSource loadNextWithSuccess:^{
+        [self.collectionView performBatchUpdates:^{
+            NSInteger numberOfItemsAfterLoaded = self.dataSource.count;
+            
+            if (numberOfItemsAfterLoaded < numberOfItemsBeforeUpdates) {
+                return;
+            }
+            
+            NSMutableArray *indexPathsForInsert = [NSMutableArray array];
+            for (NSInteger i=numberOfItemsBeforeUpdates; i<numberOfItemsAfterLoaded; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                [indexPathsForInsert addObject:indexPath];
+            }
+            
+            [self.collectionView insertItemsAtIndexPaths:indexPathsForInsert];
+        } completion:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"load more error:%@", error);
     }];
 }
 
@@ -111,6 +144,7 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CHPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.imageView.image = nil;
     
     CHTweetModel *tweet = [self.dataSource tweetAtIndex:indexPath.row];
     
@@ -120,6 +154,10 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
                 NSLog(@"image loading error:%@", error);
             }
         }];
+    }
+    
+    if (indexPath.row == self.dataSource.count - 1) {
+        [self loadMore];
     }
     
     return cell;
