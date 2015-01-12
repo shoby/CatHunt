@@ -16,6 +16,8 @@
 #import "CHSizesModel.h"
 #import "CHPhotoCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <JDStatusBarNotification/JDStatusBarNotification.h>
 
 static const NSInteger CHPhotoCollectionViewControllerColumnCount = 2.0;
 static const NSInteger CHPhotoCollectionViewControllerItemSpace = 4.0;
@@ -111,6 +113,19 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
     }];
 }
 
+- (void)saveImage:(UIImage *)image
+{
+    ALAssetsLibrary *assertLibrary = [[ALAssetsLibrary alloc] init];
+    [assertLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+        if (error) {
+            NSLog(@"image save error:%@", error);
+            return;
+        }
+        
+        [JDStatusBarNotification showWithStatus:@"画像を保存しました" dismissAfter:1.0 styleName:JDStatusBarStyleSuccess];
+    }];
+}
+
 - (void)refresControlValueChanged:(id)sender
 {
     [self reload];
@@ -121,15 +136,6 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -165,34 +171,13 @@ static NSString * const reuseIdentifier = @"PhotoCollectionViewCell";
 
 #pragma mark <UICollectionViewDelegate>
 
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CHPhotoCollectionViewCell *cell = (CHPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UIImage *image = cell.imageView.image;
+    
+    [self saveImage:image];
 }
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 #pragma mark - CHTCollectionViewDelegateWaterfallLayout
 

@@ -27,6 +27,7 @@
 		CBD782D21A5C379900595915 /* CatHuntTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD782D11A5C379900595915 /* CatHuntTests.m */; };
 		CBD782DC1A5C41FA00595915 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBD782DB1A5C41FA00595915 /* Social.framework */; };
 		CBD782DF1A5C424700595915 /* CHTwitterAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD782DE1A5C424700595915 /* CHTwitterAPIClient.m */; };
+		CBF9B9BF1A643E1F00A6EDDA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBF9B9BE1A643E1F00A6EDDA /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		CBD782DB1A5C41FA00595915 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		CBD782DD1A5C424700595915 /* CHTwitterAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHTwitterAPIClient.h; path = APIClients/CHTwitterAPIClient.h; sourceTree = "<group>"; };
 		CBD782DE1A5C424700595915 /* CHTwitterAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHTwitterAPIClient.m; path = APIClients/CHTwitterAPIClient.m; sourceTree = "<group>"; };
+		CBF9B9BE1A643E1F00A6EDDA /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBF9B9BF1A643E1F00A6EDDA /* AssetsLibrary.framework in Frameworks */,
 				CB43F9C61A5C48E100ECDDF9 /* Accounts.framework in Frameworks */,
 				CBD782DC1A5C41FA00595915 /* Social.framework in Frameworks */,
 				2E9F2DF17A879281D412F252 /* libPods-CatHunt.a in Frameworks */,
@@ -250,6 +253,7 @@
 		FE7125DEC4684B9F02501F17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBF9B9BE1A643E1F00A6EDDA /* AssetsLibrary.framework */,
 				CB43F9C51A5C48E100ECDDF9 /* Accounts.framework */,
 				CBD782DB1A5C41FA00595915 /* Social.framework */,
 				672D937C47CB290A23D63C27 /* libPods-CatHunt.a */,
